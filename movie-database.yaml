@@ -1,0 +1,510 @@
+---
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0.0"
+  title: "Movie Database"
+host: "rhino-movie-database.herokuapp.com"
+basePath: "/"
+tags:
+- name: "movies"
+  description: "Endpoints for creating, retrieving, updating and deleting information about one or more movies from the movie database."
+- name: "people"
+  description: "Endpoints for creating, retrieving, updating and deleting information about one or more people from the movie database."
+- name: "search"
+  description: "Endpoints for searching information about one or more movies and people from the movie database."
+schemes:
+- "https"
+- "http"
+paths:
+  /movies:
+    post:
+      tags:
+      - "movies"
+      summary: "Add a new Movie to the database"
+      description: ""
+      operationId: "createMovie"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/Movie"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Movie"
+        400:
+          description: "Content can not be empty"
+        500:
+          description: "Some error occured while creating the movie"
+    get:
+      tags:
+      - "movies"
+      summary: "Get all Movies"
+      description: ""
+      operationId: "getAllMovies"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Movie"
+        500:
+          description: "Some error occured while retrieving movies"
+  /movies/{mid}:
+    get:
+      tags:
+      - "movies"
+      summary: "Get a Movie"
+      description: ""
+      operationId: "findMovieById"
+      parameters:
+      - name: "mid"
+        in: "path"
+        description: "The IMDB ID for the movie."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Movie"
+        404:
+          description: "Movie not found"
+        500:
+          description: "Error retrieving movie"
+    put:
+      tags:
+      - "movies"
+      summary: "Update a Movie"
+      description: ""
+      operationId: "updateMovieById"
+      parameters:
+      - name: "mid"
+        in: "path"
+        description: "The IMDB ID for the movie."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Object with Movie object properties, except 'mid'. Not all properties are required."
+        required: true
+        schema:
+          type: "object"
+          example: {"num_votes": 100000}
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Content can not be empty"
+        404:
+          description: "Movie not found"
+        500:
+          description: "Error retrieving movie"
+    delete:
+      tags:
+      - "movies"
+      summary: "Delete a Movie"
+      description: ""
+      operationId: "removeMovie"
+      parameters:
+      - name: "mid"
+        in: "path"
+        description: "The IMDB ID for the movie."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+        404:
+          description: "Movie not found"
+        500:
+          description: "Error retrieving movie"
+  /movies/{mid}/fullcredits:
+    get:
+      tags:
+      - "movies"
+      summary: "Get a Movie's Credits"
+      description: ""
+      operationId: "findCreditsById"
+      parameters:
+      - name: "mid"
+        in: "path"
+        description: "The IMDB ID for the movie."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Credit"
+        404:
+          description: "Movie not found"
+        500:
+          description: "Error retrieving movie"
+  /movies/{mid}/genres:
+    get:
+      tags:
+      - "movies"
+      summary: "Get a Movie's Genres"
+      description: ""
+      operationId: "findGenresById"
+      parameters:
+      - name: "mid"
+        in: "path"
+        description: "The IMDB ID for the movie."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Genre"
+        404:
+          description: "Movie genres not found"
+        500:
+          description: "Error retrieving movie genres"
+  /people:
+    post:
+      tags:
+      - "people"
+      summary: "Add a new Person to the database"
+      description: ""
+      operationId: "createPerson"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/Person"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Person"
+        400:
+          description: "Content can not be empty"
+        500:
+          description: "Some error occured while creating the person"
+    get:
+      tags:
+      - "people"
+      summary: "Get all People"
+      description: ""
+      operationId: "getAllPeople"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Person"
+        500:
+          description: "Some error occured while retrieving people"
+  /people/{pid}:
+    get:
+      tags:
+      - "people"
+      summary: "Get a Person"
+      description: ""
+      operationId: "findPersonById"
+      parameters:
+      - name: "pid"
+        in: "path"
+        description: "The IMDB ID for the person."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Person"
+        404:
+          description: "Person not found"
+        500:
+          description: "Error retrieving person"
+    put:
+      tags:
+      - "people"
+      summary: "Update a Person"
+      description: ""
+      operationId: "updatePersonById"
+      parameters:
+      - name: "pid"
+        in: "path"
+        description: "The IMDB ID for the person."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true 
+        schema:
+          type: "object"
+          example: {name: "Chan Kong-Sang"}
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Content can not be empty"
+        404:
+          description: "Person not found"
+        500:
+          description: "Error retrieving person"
+    delete:
+      tags:
+      - "people"
+      summary: "Delete a Person"
+      description: ""
+      operationId: "removePerson"
+      parameters:
+      - name: "pid"
+        in: "path"
+        description: "The IMDB ID for the person."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+        404:
+          description: "Person not found"
+        500:
+          description: "Error retrieving person"
+  /people/{pid}/filmography:
+    get:
+      tags:
+      - "people"
+      summary: "Get a Person's Filmography"
+      description: ""
+      operationId: "findFilmographyById"
+      parameters:
+      - name: "pid"
+        in: "path"
+        description: "The IMDB ID for the person."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/FilmographyElement"
+        404:
+          description: "Person filmography not found"
+        500:
+          description: "Error retrieving person filmography"
+  /search/movie:
+    get:
+      tags:
+      - "search"
+      summary: "Search for a Movie"
+      description: ""
+      operationId: "searchMovie"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "title"
+        type: "string"
+        description: "The original title text of the movie."
+      - in: "query"
+        name: "summary"
+        type: "string"
+        description: "A plot outline element of the movie. Plot outlines never contain spoilers."
+      - in: "query"
+        name: "minruntime"
+        type: "integer"
+        description: "The minimum running time of the movie in minutes."
+      - in: "query"
+        name: "maxruntime"
+        type: "integer"
+        description: "The maximum running time of the movie in minutes."
+      - in: "query"
+        name: "minrating"
+        type: "number"
+        description: "The minimum IMDB Rating for the movie."
+      - in: "query"
+        name: "maxrating"
+        type: "number"
+        description: "The maximum IMDB Rating for the movie."
+      - in: "query"
+        name: "minvotes"
+        type: "integer"
+        description: "The maximum number of IMDB users who have voted on the movie."
+      - in: "query"
+        name: "maxvotes"
+        type: "integer"
+        description: "The maximum number of IMDB users who have voted on the movie."
+      - in: "query"
+        name: "genres"
+        type: "string"
+        description: "A list of genres to which this movie belongs (e.g. drama,sci-fi). Note that the movie does not require to belong to every genre in the list."
+      - in: "query"
+        name: "year"
+        type: "integer"
+        description: "The release year of the movie."
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Movie"
+        404:
+          description: "No movie found"
+        500:
+          description: "Error retrieving movie"
+  /search/person:
+    get:
+      tags:
+      - "search"
+      summary: "Search for a Person"
+      description: ""
+      operationId: "searchPerson"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "name"
+        type: "string"
+        description: "The name of the person."
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Person"
+        404:
+          description: "No movie found"
+        500:
+          description: "Error retrieving movie"
+definitions:
+  Credit:
+    type: "object"
+    properties:
+      pid:
+        type: "string"
+        description: "The IMDb ID for the person."
+      name:
+        type: "string"
+        description: "The primary name by which this person is known."
+      job:
+        type: "string"
+        description: "Each credit is within a \"job\" such as \"actor\", \"director\" or \"writer\"."
+      credit:
+        type: "string"
+        description: "For cast credits, we include the more specific \"credit\" that the person was credited with if applicable."
+      role:
+        type: "string"
+        description: "For cast credits, we include the roles that the person played."
+    example:
+      pid: "nm0000148"
+      name: "Harrison Ford"
+      job: "actor"
+      credit: ""
+      role: "Indiana Jones"  
+  FilmographyElement:
+    type: "object"
+    properties:
+      mid:
+        type: "string"
+        description: "The IMDb ID for the movie."
+      title:
+        type: "string"
+        description: "The original title text of the movie, normally what the title is known as in its original country of release."
+      release_date:
+        type: "string"
+        description: "The release date for this movie. Each release date specify year, month and day (e.g. 1979-08-16)."
+      job:
+        type: "string"
+        description: "Each credit is within a \"job\" such as \"actor\", \"director\" or \"writer\"."
+      credit:
+        type: "string"
+        description: "For crew jobs (e.g. \"writer\"), we include the more specific \"credit\" that the person was credited with if applicable."
+      role:
+        type: "string"
+        description: "For cast jobs (e.g. \"actor\"), we include the roles that the person played."
+    example:
+      mid: "tt0097576"
+      title: "Indiana Jones and the Last Crusade"
+      release_date: "1989-05-24"
+      job: "actor"
+      credit: ""
+      role: "Indiana Jones"
+  Genre:
+    type: "object"
+    properties:
+      genre:
+        type: "string"
+        description: "Genre to which this movie belongs. IMDb defines a limited list of genres but may add more in the future."
+    example:
+      genre: "Drama"
+  Movie:
+    type: "object"
+    properties:
+      mid:
+        type: "string"
+        description: "The IMDb ID for the movie."
+      title:
+        type: "string"
+        description: "The original title text of the movie, normally what the title is known as in its original country of release."
+      release_date:
+        type: "string"
+        description: "The release date for this movie. Each release date specify year, month and day (e.g. 1979-08-16)."
+      summary:
+        type: "string"
+        description: "A plot outline of this movie, no longer than 239 characters. Plot never contain spoilers."
+      runtime:
+        type: "integer"
+        description: "The running time of this movie in minutes."
+      rating:
+        type: "number"
+        description: "The IMDb Rating for the movie. The rating is between 1 and 10 and given to one decimal place."
+      num_votes:
+        type: "integer"
+        description: "The number of IMDb users who have voted on this movie."
+    example:
+      mid: "tt3799694"
+      title: "The Nice Guys"
+      release_date: "2016-05-15"
+      summary: "In 1970s Los Angeles, a mismatched pair of private eyes investigate a missing girl and the mysterious death of a porn star."
+      runtime: 116
+      rating: 7.4
+      num_votes: 263707
+  Person:
+    type: "object"
+    properties:
+      pid:
+        type: "string"
+        description: "The IMDb ID for the person."
+      name:
+        type: "string"
+        description: "The primary name by which this person is known."
+    example:
+      pid: "nm0000329"
+      title: "Jackie Chan"
